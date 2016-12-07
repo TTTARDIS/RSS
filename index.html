@@ -1,0 +1,827 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>My RSS</title>
+ <style>
+ 
+.contentskin1{
+	background-image:url(Images/skin/grey.png); 
+}
+.contentskin2{
+	background-image:url(Images/skin/chocolate.png); 
+}
+.contentskin3{
+	background-image:url(Images/skin/wall.png); 
+}
+
+ .weather {
+	position: absolute;
+}
+ .weather {
+	position: absolute;
+}
+ </style>
+<link href="jquery-mobile/jquery.mobile-1.0a3.min.css" rel="stylesheet" type="text/css"/>
+<script src="jquery-mobile/jquery-1.5.min.js" type="text/javascript"></script>
+<script src="jquery-mobile/jquery.mobile-1.0a3.min.js" type="text/javascript"></script>
+<script src="/phonegap.js" type="text/javascript"></script>
+<script type="text/javascript">
+ document.addEventListener("deviceready", onDeviceReady, false);      
+    
+    // PhoneGap加载完毕，可以安全调用PhoneGap方法    
+    function onDeviceReady() {     
+        checkConnection();     
+    }   
+	
+function getdevice(){
+	localStorage.setItem('width',screen.availWidth);
+	localStorage.setItem('height',screen.availHeight);
+}
+
+function subscribe(id){
+ 
+	var add=""; 
+	try{
+	if(!localStorage.getItem(id)){
+	localStorage.setItem(id,"false");
+}
+
+if(localStorage.getItem(id)=="false"){
+//如果是未定阅，则现在订阅
+localStorage.setItem(id,"true");
+document.getElementById("allnews-img"+id).style.backgroundImage="url(Images/remove.png)";
+  
+alert("订阅成功！");	
+}
+else if(localStorage.getItem(id)=="true"){
+//如果已订阅，取消订阅	
+	localStorage.setItem(id,"false");
+	 document.getElementById("allnews-img"+id).style.backgroundImage="url(Images/add.png)";
+	   
+    alert("取消订阅！");
+}}
+catch(exception){
+	alert("订阅器异常！");
+}
+ 
+}
+
+function loadsubscription(){       //读取本地订阅信息
+                  
+		var nameaddr=20;           //相应新闻的中文名字偏移存储空间
+		var imgaddr=40; 
+		var urladdr=60;
+		var targetaddr=80; 
+		var name="";      
+ 	for(i=1;i<=nameaddr;i++){
+	   
+	    if(!localStorage.getItem(nameaddr+i)&&!localStorage.getItem(imgaddr+i)){//初始化二级地址空间；设定偏移地址为100+后为二级地址存放空间
+			localStorage.setItem(nameaddr+i,"该订阅不存在！");}
+			
+			switch(nameaddr+i){              //初始化所有RSS地址及对应的名字
+				
+		case nameaddr+1:                 //海大要闻
+		name="海大要闻";	
+		localStorage.setItem(nameaddr+1,name);
+		localStorage.setItem(imgaddr+1,"Images/dlmu/yaowen.jpg");
+	    localStorage.setItem(urladdr+1,'http://202.118.83.98/dlmu2/index.php?m=content&c=rss&catid=1&siteid=1&rssid=1');
+		localStorage.setItem(targetaddr+1,"yaowen");
+		break;
+		
+		case nameaddr+2:                 //学生通知
+		name="学生通知";		
+		localStorage.setItem(nameaddr+2,name);
+		localStorage.setItem(imgaddr+2,"Images/dlmu/tongzhi.jpg");
+		localStorage.setItem(urladdr+2,'http://my.dlmu.edu.cn/oa/oarss/listAnnouncementToXML.do?loginname=20062003&columnId=1019');
+		localStorage.setItem(targetaddr+2,"tongzhi");
+		break;
+		 
+		case nameaddr+3:                 //竞赛信息
+		name="竞赛信息";		
+		localStorage.setItem(nameaddr+3,name);
+		localStorage.setItem(imgaddr+3,"Images/dlmu/jingsai.jpg");
+		localStorage.setItem(urladdr+3,'http://202.118.89.177/xiaoli/index.php?m=content&c=rss&rssid=16');
+		localStorage.setItem(targetaddr+3,"zhongguozuqiu");
+		break;
+		
+		case nameaddr+4:                 //学术报告
+		name="学术报告";		
+		localStorage.setItem(nameaddr+4,name);
+		localStorage.setItem(imgaddr+4,"Images/dlmu/xueshu.jpg");
+		localStorage.setItem(urladdr+4,'http://zqxt.dlmu.edu.cn/index.php?m=content&c=rss_special_for_site&catid=1184&siteid=28&rssid=1184');
+		localStorage.setItem(targetaddr+4,"xueshu");
+		break;
+		
+		case nameaddr+5:                 //学生新闻
+		name="学生新闻";		
+		localStorage.setItem(nameaddr+5,name);
+		localStorage.setItem(imgaddr+5,"Images/dlmu/xinwen.jpg");
+		localStorage.setItem(urladdr+5,' http://202.118.83.98/dlmu2/index.php?m=content&c=rss&catid=3&siteid=1&rssid=3');
+		localStorage.setItem(targetaddr+5,"it");
+		break;
+		
+		case nameaddr+11:                 //航海学院
+		name="航海学院";		
+		localStorage.setItem(nameaddr+11,name);
+		localStorage.setItem(imgaddr+11,"Images/dlmu/hang.jpg");
+		localStorage.setItem(urladdr+11,'http://202.118.80.35/rss/hanghai.xml');
+		localStorage.setItem(targetaddr+11,"hanghai");
+		break;
+		
+		case nameaddr+12:                 //轮机工程学院
+		name="轮机工程学院";		
+		localStorage.setItem(nameaddr+12,name);
+		localStorage.setItem(imgaddr+12,"Images/dlmu/lun.jpg");
+		localStorage.setItem(urladdr+12,'http://202.118.80.35/rss/lunji.xml');
+		localStorage.setItem(targetaddr+12,"lunji");
+		break;
+		
+		case nameaddr+13:                 //交通运输管理学院
+		name="交通运输管理学院";		
+		localStorage.setItem(nameaddr+13,name);
+		localStorage.setItem(imgaddr+13,"Images/dlmu/guan.jpg");
+		localStorage.setItem(urladdr+13,'http://202.118.80.35/rss/guanli.xml');
+		localStorage.setItem(targetaddr+13,"guanli");
+		break;
+			
+		case nameaddr+14:                 //信息科学技术学院
+		name="信息科学技术学院";		
+		localStorage.setItem(nameaddr+14,name);
+		localStorage.setItem(imgaddr+14,"Images/dlmu/xin.jpg");
+		localStorage.setItem(urladdr+14,'http://202.118.80.35/rss/xinxi.xml');
+		localStorage.setItem(targetaddr+14,"xinxi");
+		break;
+
+	}
+			 
+ }
+		 
+	 
+	}
+
+function showshelf(){
+	 //localStorage.clear(); 
+	 var count=0;
+	 var temp='';
+	 var liststyle='style="background:url(Images/background.png);background-repeat:no-repeat;width:80px; height:80px;margin-right:10px; margin-left:10px; margin-top:10px; margin-bottom:10px"';
+	 
+	if(!localStorage.getItem(21)){
+		 loadsubscription();
+	}
+	var newslist='';
+	for(i=1;i<20;i++){                                                 
+	var divclick1='getnews("'+localStorage.getItem(60+i)+'","'+localStorage.getItem(80+i)+'")';                     
+		if(localStorage.getItem(i)=="true"){
+			count+=1;
+			 switch(count%3){
+				 case 0:
+				 temp='c';
+				 break;
+				 case 1:
+				 temp='a';
+				 break;
+				 case 2:
+				 temp='b';
+				 break;
+				 
+			 }
+			newslist+='<div class="ui-block-'+temp+'" '+liststyle+'>'
+			+'<a href="#page'+i+'" '+'style="text-decoration:none" '+'>'
+			+'<div class="ui-grid-a" style="margin-left:8px; margin-top:5px;" onClick='+divclick1+'>'			
+			+'<div class="ui-block-a"  style="width:48px; height:48px;margin-left:5px">'+'<img src="'+localStorage.getItem(40+i)+'"/></div>'
+			+'<div class="ui-block-a" style="margin-top:-12px; margin-left:2px"><pre>'+localStorage.getItem(20+i)+'</pre></div></div></a></div>';
+			
+		}
+		
+	}
+	  
+    document.getElementById("newsshelf").innerHTML = newslist;
+	
+}
+
+function getnews(url,target){
+	            var html = "";
+				var xml="";
+				 
+				if(window.XMLHttpRequest){
+					var xhr = new XMLHttpRequest();
+					xhr.open("GET",url,false);
+					xhr.send(null);
+					xml = xhr.responseXML.documentElement;
+				}else if(window.ActiveXObject){
+					xml = new ActiveXObject("Msxml2.DOMDocument");
+					xml.async = false;
+					xml.load(url);
+				}else{
+					xml = "";
+					alert("没有获取到xml数据");
+				}
+				//显示数据
+				var items = xml.getElementsByTagName("item");
+					for(var i=0; i<localStorage.getItem('newsnum'); i++){
+						html+='<li> <details><summary><p style="font:bold">'+items.item(i).getElementsByTagName("title")[0].childNodes[0].nodeValue+'</p></summary><p style="font-size:12px;color:grey">'+items.item(i).getElementsByTagName("pubDate")[0].childNodes[0].nodeValue+'</p><p style="margin-top:-10px">'+items.item(i).getElementsByTagName("description")[0].childNodes[0].nodeValue+'<a href="'+items.item(i).getElementsByTagName("link")[0].childNodes[0].nodeValue+'">阅读详情'+'>'+'</a></p></details></li><hr/>';
+					}
+					document.getElementById(target).innerHTML = html;
+				}
+function getWeather(){
+	if(!localStorage.getItem('weather_city')){
+		localStorage.setItem('weather_city','nanjing');
+	}
+	            var html = "";
+				var xml="";
+				 
+			    var url ="http://www.raychou.com/weather/rss.php?id="+localStorage.getItem("weather_city");//RSS天气信息
+				if(window.XMLHttpRequest){
+					var xhr = new XMLHttpRequest();
+					xhr.open("GET",url,false);
+					xhr.send(null);
+					xml = xhr.responseXML.documentElement;
+				}else if(window.ActiveXObject){
+					xml = new ActiveXObject("Msxml2.DOMDocument");
+					xml.async = false;
+					xml.load(url);
+				}else{
+					xml = "";
+					alert("没有获取到xml数据");
+				}
+				//显示数据
+				var city=xml.getElementsByTagName("channel");
+				var items = xml.getElementsByTagName("item");
+				var cityname=city.item(0).getElementsByTagName("title")[0].childNodes[0].nodeValue;	
+				var weathercondition=items.item(0).getElementsByTagName("title")[0].childNodes[0].nodeValue;
+				var date=new Date();
+				var month=date.getMonth()+1;
+				var day=date.getDate();
+				   html ='<p style="margin-top:-20px"><strong>'+cityname.substring(0,cityname.length-4)+'</strong>&nbsp;&nbsp'+weathercondition.substring(12,weathercondition.length)+'&nbsp;<br/>'+month+'月'+day+'日'+'<a  onclick="changeCity()" style="text-decoration:none;color:blue">&nbsp;&nbsp;[切换城市]</a>'+'</p>';
+					
+					
+					
+					document.getElementById('weather').innerHTML = html;
+}					
+   
+  function changeCity(){
+	  var city=prompt("切换城市","城市拼音");
+	 if(city){
+	   localStorage.setItem('weather_city',city);
+	   getWeather();
+	 }
+  }
+ 
+function format(){
+	if(window.confirm("此操作将删除您所有订阅信息？")){
+		localStorage.clear();
+		alert("用户数据已清除！");}
+		 
+}
+function newsnum(){
+	if(!localStorage.getItem('newsnum')){
+	localStorage.setItem('newsnum',6);}
+	localStorage.setItem('newsnum',$("#selectnewsnum option:selected").val());
+}
+function updateSkin(toSkin){
+	var index_content=document.getElementById('page_index_content');
+	var subscriptions_content=document.getElementById('page_subscriptions_content');
+	var settings_content=document.getElementById('page_settings_content');
+ 
+	switch(toSkin){
+		case 0:      
+	    index_content.style.background="";
+	    subscriptions_content.style.background="";
+	 	settings_content.style.background="";
+		break;
+		 
+		case 1:                  
+	    index_content.style.background="url(Images/skin/grey.png) ";
+	    subscriptions_content.style.background="url(Images/skin/grey.png) ";
+	    settings_content.style.background="url(Images/skin/grey.png)";
+	    break;
+		 
+		case 2:                          
+	    index_content.style.background="url(Images/skin/chocolate.png)";
+	    subscriptions_content.style.background="url(Images/skin/chocolate.png)";
+	    settings_content.style.background="url(Images/skin/chocolate.png)";
+		break;
+		
+		case 3:                             
+	    index_content.style.background="url(Images/skin/wall.png)";
+	    subscriptions_content.style.background="url(Images/skin/wall.png)";
+	    settings_content.style.background="url(Images/skin/wall.png)";
+		break;
+	}
+}
+ 
+ 
+
+
+ function toskin(){
+	 if(!localStorage.getItem('skinID')){
+		 localStorage.setItem('skinID',0);}
+		 else{
+		localStorage.setItem('skinID',$("#selectSkin option:selected").val());
+       // updateSkin(localStorage.getItem('skinID'));
+      //   alert(localStorage.getItem('skinID'));
+		updateSkin(parseInt(localStorage.getItem('skinID')));
+		 }
+}
+   function changenet(){
+	   if(!localStorage.getItem('connection')){
+	localStorage.setItem('connection',3);}
+	localStorage.setItem('connection',$("#selectconnection option:selected").val());
+	
+	 var networkState = navigator.network.connection.type;      
+     var states = {};   
+ 
+ switch(parseInt(localStorage.getItem('connection'))){
+	case 0:
+	 networkState=Connection.UNKNOWN;
+     states[Connection.UNKNOWN]  = 'Unknown connection'; 
+	 break;
+    case 1:
+	 networkState=Connection.ETHERNET;
+     states[Connection.ETHERNET]  = 'Unknown connection'; 
+	 break;
+    case 2:
+	 networkState=Connection.WIFI;
+     states[Connection.WIFI]  = 'WiFi connection'; 
+	 break;
+    case 3:
+	 networkState=Connection.CELL_2G;
+     states[Connection.CELL_2G]  = 'Cell 2G connection'; 
+	 break;
+    case 4:
+	 networkState=Connection.CELL_3G;
+     states[Connection.CELL_3G]  = 'Cell 3G connection'; 
+	 break;
+    case 5:
+	 networkState=Connection.CELL_4G;
+     states[Connection.CELL_4G]  = 'Cell 4G connection'; 
+	 break;
+    case 6:
+	 networkState=Connection.NONE;
+     states[Connection.NONE]  = 'No network connection'; 
+	 break;
+ }
+   alert('Connection type: ' + states[networkState]);   
+   
+   }
+</script>
+</head> 
+<body> 
+ <script language="javascript">                      //首页启动时便刷新显示已订阅项目
+  window.onfocus = function(){showshelf(),getWeather(),newsnum()}
+  </script>
+
+<div data-role="page" id="page_index" >
+
+	<div data-role="header" id='page_index_header'>
+        <a href="#subscriptions" data-theme="b" data-icon="plus">添加订阅</a>
+       <h1 align="center">海大RSS订阅器</h1>
+       <a href="#settings" data-icon="gear" data-theme="b">设置</a>
+    </div>
+
+  <div data-role="content" style="margin-top:-30px; margin-left:-10px;width:screen.width;height:600px;" id='page_index_content' >	
+      <h1 ><img src="Images/bookmarks.png"></h1>
+    <div id='weather'>
+    </div>
+  
+    
+   <div id="newsshelf" class="ui-grid-c">
+   </div>
+    </div>
+    <div data-role="footer">
+		<h4></h4>
+	</div> 
+</div>
+
+<div data-role="page" id="page1">
+	<div data-role="header">
+        <a href="#page_index" data-icon="back" >返回</a>
+		<h1>海大要闻</h1>
+        <a onClick="getnews('http://202.118.83.98/dlmu2/index.php?m=content&c=rss&catid=1&siteid=1&rssid=1 ','yaowen')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="content">	
+	   <ul id="yaowen"> 
+          </ul> 	  	
+	</div>
+</div>
+
+<div data-role="page" id="page2">
+	<div data-role="header">
+        <a href="#page_index" data-icon="back">返回</a>
+		<h1>学生通知</h1>
+        <a onClick="getnews('http://my.dlmu.edu.cn/oa/oarss/listAnnouncementToXML.do?loginname=20062003&columnId=1019','tongzhi')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="tongzhi">	
+            <ul id="yule"> </ul>	 
+	</div> 
+</div>
+
+<div data-role="page" id="page3">    
+	<div data-role="header">
+       <a href="#page_index" data-icon="back">返回</a>
+		<h1>竞赛信息</h1>
+       <a onClick="getnews('http://202.118.89.177/xiaoli/index.php?m=content&c=rss&rssid=16','jingsai')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="content">	
+            <ul id="jingsai"> </ul>	
+	</div>
+</div>
+
+<div data-role="page" id="page4">    
+	<div data-role="header">
+       <a href="#page_index" data-icon="back">返回</a>
+		<h1>学术报告</h1>
+       <a onClick="getnews('http://zqxt.dlmu.edu.cn/index.php?m=content&c=rss_special_for_site&catid=1184&siteid=28&rssid=1184','xueshu')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="content">	
+	      <ul id="xueshu"> </ul>	
+	</div>
+</div>
+
+<div data-role="page" id="page5">    
+	<div data-role="header">
+           <a href="#page_index" data-icon="back">返回</a>
+       <h1>学生新闻</h1>
+          <a onClick="getnews('http://202.118.83.98/dlmu2/index.php?m=content&c=rss&catid=3&siteid=1&rssid=3','xinwen')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="xinwen">	
+            <ul id="xinwen"> </ul>	
+	</div>
+</div>
+
+<div data-role="page" id="page11">    
+	<div data-role="header">
+     <a href="#page_index" data-icon="back">返回</a>
+		<h1>航海学院</h1>
+     <a onClick="getnews('http://202.118.80.35/rss/hanghai.xml','hanghai')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="content">	
+		 
+            <ul id="rss_newstop"> </ul>	
+	</div>
+</div>
+
+<div data-role="page" id="page12">    
+	<div data-role="header">
+     <a href="#page_index" data-icon="back">返回</a>
+		<h1>轮机工程学院</h1>
+      <a onClick="getnews('http://202.118.80.35/rss/lunji.xml','lunji')"; data-icon="refresh">更新</a>  
+	</div>
+	<div data-role="content">	
+	 
+            <ul id="rss_entmovie"> </ul>	
+	</div>
+</div>
+
+<div data-role="page" id="page13">    
+	<div data-role="header">
+    <a href="#page_index" data-icon="back">返回</a>
+		<h1>交通运输管理学院</h1>
+     <a onClick="getnews('http://202.118.80.35/rss/guanli.xml','guanli')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="content">	
+		 
+            <ul id="mobile163"> </ul>	
+	</div>
+</div>
+
+<div data-role="page" id="page14">    
+	<div data-role="header">
+    <a href="#page_index" data-icon="back">返回</a>
+		<h1>信息科学技术学院</h1>
+      <a onClick="getnews('http://202.118.80.35/rss/xinxi.xml','xinxi')"; data-icon="refresh">更新</a>
+	</div>
+	<div data-role="content">	
+		  <ul id="rss_whzx"> </ul>	
+	</div>
+</div>
+
+
+<div data-role="page" id="settings" >
+	<div data-role="header" id="page_settings_header">
+     <a href="#page_index" data-icon="back">返回</a>
+		<h1>设置</h1>
+	</div>
+	<div data-role="content" id="page_settings_content" style="width:480px;height:460px;" >	
+   
+		<div style="background:#CCC">基本设置</div>
+        <article data-role="content">
+    
+     <article> 
+       <div class="ui-grid-c">
+          
+          <div class="ui-block-a" style="margin-top:-10px">
+            <p style="font-weight:bold">换肤</p>&nbsp;
+            <p style="margin-top:-30px; width:200px;font-size:12px">将更改您的本地界面</p> </div>
+
+         
+          <div class="ui-block-b" style="margin-left:70px;width:100px;"  >
+           <select id="selectSkin" name="selectSkin" onChange="toskin()" > 
+                <option selected value="parseInt(localStorage.getItem("skinID"))">✎</option>
+                <option  value="0" >Ⅰ默认</option> 
+                <option value="1">Ⅱ灰色</option> 
+                <option value="2">Ⅲ羊皮纸</option> 
+                <option  value="3">Ⅳ墙面</option> 
+           </select> 
+            </div>
+       </div>
+       
+    </article>
+       <hr/>  
+       
+       
+       <article> 
+       <div class="ui-grid-c">
+          
+          <div class="ui-block-a" style="margin-top:-10px">
+            <p style="font-weight:bold">数目</p>&nbsp;
+            <p style="margin-top:-30px; width:200px;font-size:12px">每栏目加载新闻数目</p> </div>
+
+         
+          <div class="ui-block-b" style="margin-left:70px;width:100px;"  >
+           <select id="selectnewsnum"   onChange="newsnum()" > 
+                <option selected value="6">☞</option>
+                <option  value="6" >Ⅰ6</option> 
+                <option value="8">Ⅱ8</option> 
+                <option value="10">Ⅲ10</option> 
+                <option  value="20">Ⅳall</option> 
+           </select> 
+       
+            </div>
+       </div>
+       
+    </article>
+      
+       <hr/>
+         <article> 
+       <div class="ui-grid-c">
+          
+          <div class="ui-block-a" style="margin-top:-10px">
+            <p style="font-weight:bold">更改连接</p>&nbsp;
+            <p style="margin-top:-30px; width:200px;font-size:12px">将更改您当前的网络连接方式</p> </div>
+         
+           <div class="ui-block-b" style="margin-left:70px;width:100px;"  >
+           <select id="selectconnection"   onChange="changenet()" > 
+                <option selected value="parseInt(localStorage.getItem("connection"))">Ю</option>
+                <option  value="0" >ⅠUnknown</option> 
+                <option value="1">ⅡEthernet</option> 
+                <option value="2">ⅢWiFi</option> 
+                <option  value="3">Ⅳ2G</option> 
+                 <option  value="4">Ⅴ3G</option> 
+                  <option  value="5">Ⅵ4G</option> 
+                   <option  value="6">ⅦNone</option> 
+           </select> 
+           </div>
+       </div>
+    </article>
+       <hr/> 
+       <article> 
+       <div class="ui-grid-c">
+          
+          <div class="ui-block-a" style="margin-top:-10px">
+            <p style="font-weight:bold">管理订阅</p>&nbsp;
+            <p style="margin-top:-30px; width:200px;font-size:12px">管理您的订阅项目</p> </div>
+         
+          <div class="ui-block-b" style="margin-left:70px;width:100px" >
+           <button value="管理" onClick="window.location='././index.html#subscriptions'"></button>
+           </div>
+       </div>
+    </article>
+       <hr/>  
+        
+    <article> 
+       <div class="ui-grid-c">
+          
+          <div class="ui-block-a" style="margin-top:-10px">
+            <p style="font-weight:bold">清空订阅</p>&nbsp;
+            <p style="margin-top:-30px; width:200px;font-size:12px">将删除您所有订阅记录</p> </div>
+         
+          <div class="ui-block-b" style="margin-left:70px;width:100px" >
+           <button value="清空" onClick="format()"></button>
+           </div>
+       </div>
+    </article>
+       <hr/> 
+       
+    
+         
+     <article> 
+       <div class="ui-grid-c">
+          
+          <div class="ui-block-a" style="margin-top:-10px">
+            <p style="font-weight:bold">关于</p>&nbsp;
+            <p style="margin-top:-30px;width:200px; font-size:12px">简介</p> </div>
+         
+          <div class="ui-block-b" style="margin-left:70px;width:100px" >
+           <button value="查看" onClick="alert('OTT')"></button>
+           </div>
+       </div>
+    </article>
+       <hr/> 
+     
+    </div>
+    
+  <div data-role="footer">
+		<h4></h4>
+	</div>
+</div>
+
+ 
+<div data-role="page" id="subscriptions" >
+	<div data-role="header" style="background:red" id="page_subscriptions_header">
+    <a href="#page_index" data-icon="back">返回</a>
+		<h1>管理订阅</h1>
+    <a onClick="window.location.reload()"  data-icon="refresh">刷新</a>
+	</div>
+	<div data-role="content" id="page_subscriptions_content" style="width:480px; height:1200px">	
+	 
+      <div  data-role="collapsible">
+      <h3>海大订阅</h3>
+       <article data-role="content">
+      
+    <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/yaowen.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold; width:120px; ">海大要闻</p>&nbsp;
+            <p style="margin-top:-30px;  width:120px; font-size:12px"></p> </div>
+          <div id="allnews1" class="ui-block-c" style="margin-left:50px ">
+          <script>
+		  if(localStorage.getItem(1)=="true"){
+			 allnews1.innerHTML='<a  data-role="button" id="allnews-img1" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(1);"></a>';
+		  }else{
+			 allnews1.innerHTML='<a  data-role="button" id="allnews-img1" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(1);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+       <hr/> 
+       
+       
+       <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/tongzhi.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px;">学生通知</p>&nbsp;
+            <p style="margin-top:-30px; width:120px;font-size:12px"></p> </div>
+          <div id="allnews2" class="ui-block-c" style="margin-left:50px ; ">
+          <script>
+		  if(localStorage.getItem(2)=="true"){
+			   
+			 allnews2.innerHTML='<a   data-role="button" id="allnews-img2" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(2);"></a>';
+		  }else{
+			 allnews2.innerHTML='<a  data-role="button" id="allnews-img2" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(2);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+    
+      <hr/> 
+	   
+        <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/jingsai.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px;">竞赛信息</p>&nbsp;
+            <p style="margin-top:-30px; width:120px;font-size:12px"></p> </div>
+          <div id="allnews3" class="ui-block-c" style="margin-left:50px ; ">
+          <script>
+		  if(localStorage.getItem(3)=="true"){
+			  allnews3.innerHTML='<a   data-role="button" id="allnews-img3" style="background:url(Images/remove.png); border-style:none;   width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(3);"></a>';
+		  }else{
+			 allnews3.innerHTML='<a  data-role="button" id="allnews-img3" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(3);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+    
+    
+    <hr/> 
+       <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/xueshu.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px;">学术报告</p>&nbsp;
+            <p style="margin-top:-30px;width:120px; font-size:12px"></p> </div>
+          <div id="allnews4" class="ui-block-c" style="margin-left:50px ; ">
+          <script>
+		  if(localStorage.getItem(4)=="true"){
+			 allnews4.innerHTML='<a   data-role="button" id="allnews-img4" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(4);"></a>';
+		  }else{
+			 allnews4.innerHTML='<a  data-role="button" id="allnews-img4" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(4);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+      <hr/>  
+    
+     
+       <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/xinwen.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px;">学生新闻</p>&nbsp;
+            <p style="margin-top:-30px; width:120px;font-size:12px"></p> </div>
+          <div id="allnews5" class="ui-block-c" style="margin-left:50px ; ">
+          <script>
+		  if(localStorage.getItem(5)=="true"){
+			 allnews5.innerHTML='<a   data-role="button" id="allnews-img5" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(5);"></a>';
+		  }else{
+			 allnews5.innerHTML='<a  data-role="button" id="allnews-img5" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(5);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+      <hr/>  
+    
+    
+       </article>
+       
+      </div>
+   
+   
+    <div  data-role="collapsible">
+      <h3>院系风采</h3>
+   
+      
+     <article data-role="content">
+      
+    <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/hang.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;  width:120px ">航海学院</p>&nbsp;
+            <p style="margin-top:-30px; width:120px;font-size:12px"></p> </div>
+          <div id="allnews11" class="ui-block-c" style="margin-left:50px ">
+          <script>
+		  if(localStorage.getItem(11)=="true"){
+			allnews11.innerHTML='<a  data-role="button" id="allnews-img11" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(11);"></a>';
+		  }else{
+			 allnews11.innerHTML='<a  data-role="button" id="allnews-img11" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(11);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+       <hr/> 
+       
+        <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/lun.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px; ">轮机工程学院</p>&nbsp;
+            <p style="margin-top:-30px;width:120px;font-size:12px"></p> </div>
+          <div id="allnews12" class="ui-block-c" style="margin-left:50px ">
+          <script>
+		  if(localStorage.getItem(12)=="true"){
+			 allnews12.innerHTML='<a  data-role="button" id="allnews-img12" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(12);"></a>';
+		  }else{
+			 allnews12.innerHTML='<a  data-role="button" id="allnews-img12" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(12);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+       <hr/> 
+       <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/guan.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px; ">交通运输管理学院</p>&nbsp;
+            <p style="margin-top:-30px; width:120px;font-size:12px"></p> </div>
+          <div id="allnews13" class="ui-block-c" style="margin-left:50px ">
+          <script>
+		  if(localStorage.getItem(13)=="true"){
+			allnews13.innerHTML='<a  data-role="button" id="allnews-img13" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(13);"></a>';
+		  }else{
+			 allnews13.innerHTML='<a  data-role="button" id="allnews-img13" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(13);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+       <hr/> 
+       
+      <article> 
+       <div class="ui-grid-c">
+          <div class="ui-block-a" style="width:40px"> <img src="Images/dlmu/xin.jpg"/> </div>
+          <div class="ui-block-b" style="margin-top:-10px; margin-left:30px">
+            <p style="font-weight:bold;width:120px; ">信息科学与技术学院</p>&nbsp;
+            <p style="margin-top:-30px; width:120px;font-size:12px"></p> </div>
+          <div id="allnews14" class="ui-block-c" style="margin-left:50px ">
+          <script>
+		  if(localStorage.getItem(14)=="true"){
+			 allnews14.innerHTML='<a  data-role="button" id="allnews-img14" style="background:url(Images/remove.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;"  onClick="subscribe(14);"></a>';
+		  }else{
+			 allnews14.innerHTML='<a  data-role="button" id="allnews-img14" style="background:url(Images/add.png); border-style:none;  width:30px; height:30px; background-repeat:no-repeat;" onClick="subscribe(14);"></a>';
+		  }
+		 
+		  </script></div>
+    </article>
+
+      
+        </article>
+       
+         </div>
+    </div>
+       </div>
+</body>
+</html>
